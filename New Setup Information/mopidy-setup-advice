@@ -1,0 +1,16 @@
+Setting Up Mopidy with ncmpcpp & Spotify
+
+Install mopidy with spotify/streaming/local extensions - all else should be built in
+
+Despite what the docs say, you can't use mopidy as a system service + ncmppcpp + spotify + pulseaudio. Trying to set mopidy's output device as a pulseaudio server sink will fail, since mopidy as a service launches before pulseaudio as a user service - and it doesn't have anything to connect to.
+https://russellstinnett.com/2018/12/29/mopidy-pulseaudio-ncmpcpp/
+
+
+Furthermore, if you want to use it with Spotify, since the network driver loads as a system service as well, it's like mopidy will fail to connect to Spotify before the network loads. 
+
+So place Mopidy on autolaunch when the user logs in somewhere, and it'll likely load at approximately the correct time. 
+
+If you use mopidy as a service, autoaudiosink won't detect pulseaudio device changes - so it can't connect to bluetooth. 
+
+This post has the info for setting it up with the visualiser, but I"m not touching that now
+https://medium.com/@theos.space/using-mopidy-with-spotify-and-ncmpcpp-44352f4a2ce8

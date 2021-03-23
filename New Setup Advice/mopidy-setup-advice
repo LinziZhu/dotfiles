@@ -14,3 +14,6 @@ If you use mopidy as a service, autoaudiosink won't detect pulseaudio device cha
 
 This post has the info for setting it up with the visualiser, but I"m not touching that now
 https://medium.com/@theos.space/using-mopidy-with-spotify-and-ncmpcpp-44352f4a2ce8
+
+The playlists are stored in perhaps unusual places - listed here
+https://docs.mopidy.com/en/latest/ext/m3u/

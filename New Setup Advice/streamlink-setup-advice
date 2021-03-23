@@ -1,0 +1,7 @@
+Streamlink setup is mostly straightforward until you need to update the package database. As noted in a couple of spots, backports doesn't naturally get the gpg key. 
+
+There's a solution here
+https://rolfje.wordpress.com/2017/06/09/installing-gpg-keys-for-debian-backports/
+
+And an easier solution, using this basic framework here
+https://answers.launchpad.net/ubuntu/+source/apt/+question/118944

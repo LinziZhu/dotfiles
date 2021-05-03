@@ -84,6 +84,10 @@ augroup prose
 		\ set spell spelllang=en_au
 		\| call pencil#init({'wrap': 'soft'}) 
 		\| call litecorrect#init()
+	autocmd FileType pug
+		\ call pencil#init({'wrap': 'soft'}) 
+		\| call litecorrect#init()
+
 augroup END
 
 au BufNewFile ~/.vimwiki/diary/*.wiki :silent 0r !~/.vim/bin/generate-vimwiki-diary-template '%'

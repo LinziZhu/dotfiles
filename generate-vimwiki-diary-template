@@ -1,0 +1,11 @@
+#!/bin/python3
+import sys
+import datetime
+import calendar
+
+template = """# {date} @ """
+
+current_date = datetime.date.today();
+
+date = current_date.strftime("%A %m/%y")
+print(template.format(date=date))

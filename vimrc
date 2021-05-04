@@ -61,7 +61,16 @@ set mouse=a
 "set wildmenu
 "set wildchar=<TAB>
 
-let g:vimwiki_list = [{'path': '~/.vimwiki/', 'path_html': '~/.vimwiki_html/'}]
+let g:vimwiki_list = [{'path': '~/.vimwiki/', 'path_html': '~/.vimwiki_html/', 'syntax' : 'markdown', 'ext' : '.md'}]
+let g:vimwiki_global_ext = 0
+let g:vimwiki_ext2syntax = {'.md' : 'markdown', '.markdown' : 'markdown', '.mdown' : 'markdown'}
+
+command! Diary VimwikiDiaryIndex
+augroup vimwikiDiary
+	autocmd!
+	" automatically update links on Diary open
+	autocmd BufRead,BufNewFile diary.md VimwikiDiaryGenerateLinks
+augroup end
 
 set spelllang=en_au
 set spellfile=~/.vim/spell/en.utf8.add
@@ -78,7 +87,8 @@ hi SpellCap cterm=underline ctermfg=green
 augroup prose
 	autocmd!
 	autocmd FileType markdown,mkd,md
-		\ call litecorrect#init() 
+		\ set spell spelllang=en_au
+		\| call litecorrect#init() 
 		\| call pencil#init({'wrap': 'soft'})
 	autocmd FileType vimwiki
 		\ set spell spelllang=en_au
@@ -90,4 +100,4 @@ augroup prose
 
 augroup END
 
-au BufNewFile ~/.vimwiki/diary/*.wiki :silent 0r !~/.vim/bin/generate-vimwiki-diary-template '%'
+au BufNewFile ~/.vimwiki/diary/*.md :silent 0r !~/.vim/bin/generate-vimwiki-diary-template '%'

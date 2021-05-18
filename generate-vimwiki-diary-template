@@ -1,11 +1,27 @@
 #!/bin/python3
-import sys
 import datetime
-import calendar
+import json
+from random import choice
 
-template = """# {date} @ """
 
-current_date = datetime.date.today();
+template = """# {date} @ 
 
-date = current_date.strftime("%A %m/%y")
-print(template.format(date=date))
+{dailyKanji}
+
+
+"""
+
+current_date = datetime.date.today()
+date = current_date.strftime("%A %d/%m")
+
+with open('C:/Users/Linzi/AppData/Local/nvim/resources/jmdict-eng-common-3.1.0.json', encoding="utf-8") as f:
+    data = json.loads(f.read())
+
+winner = choice(data["words"])
+
+if winner["kanji"]:
+    dailyKanji = (winner["kanji"][0]["text"], winner["kana"][0]["text"], winner["sense"][0]["gloss"][0]["text"])
+else:
+    dailyKanji = (winner["kana"][0]["text"], winner["sense"][0]["gloss"][0]["text"])
+
+print(template.format(date=date, dailyKanji=str(dailyKanji)))

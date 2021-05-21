@@ -1,15 +1,15 @@
-#!/bin/python3
-import sys
 import datetime
-import calendar
 import json
 from random import choice
+import sys 
 import os
 
+sys.stdout.reconfigure(encoding='utf-8')
+jmdictPath = 'C:/Users/Linzi/AppData/Local/nvim/resources/jmdict-eng-common-3.1.0.json'
 
 #I use markdown for vim-wiki formatting. Adjust this if you use the vim-wiki native formatting.
-template = """# {date} @ 
-
+template = """# {date} @
+ 
 {formattedEntry}
 """
 
@@ -17,7 +17,7 @@ currentDate = datetime.date.today()
 date = currentDate.strftime("%A").ljust(10) + currentDate.strftime("%d/%m")
 
 #Read in the jmdict file
-with open(os.path.expanduser('~/.vim/resources/jmdict.json'), encoding="utf-8") as f:
+with open(os.path.expanduser(jmdictPath), encoding="utf-8") as f:
     jmdict = json.loads(f.read())
 
 #choice randomly selects an object from the words listed in jmdict

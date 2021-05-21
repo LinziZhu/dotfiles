@@ -1,41 +1,44 @@
 #!/bin/python3
+import sys
 import datetime
+import calendar
 import json
 from random import choice
-import sys 
 import os
 
-sys.stdout.reconfigure(encoding='utf-8')
 
+#I use markdown for vim-wiki formatting. Adjust this if you use the vim-wiki native formatting.
 template = """# {date} @ 
 
-{dailyKanji}
-
-
+{formattedEntry}
 """
 
-current_date = datetime.date.today()
-date = current_date.strftime("%A %d/%m")
+currentDate = datetime.date.today()
+date = currentDate.strftime("%A").ljust(10) + currentDate.strftime("%d/%m")
 
-with open('C:/Users/Linzi/AppData/Local/nvim/resources/jmdict-eng-common-3.1.0.json', encoding="utf-8") as f:
-    data = json.loads(f.read())
+#Read in the jmdict file
+with open(os.path.expanduser('~/.vim/resources/jmdict.json'), encoding="utf-8") as f:
+    jmdict = json.loads(f.read())
 
-winner = choice(data["words"])
+#choice randomly selects an object from the words listed in jmdict
+entryOfTheDay = choice(jmdict["words"])
 
-if winner["kanji"]:
-    dailyKanji = (winner["kanji"][0]["text"] + ' ' + winner["kana"][0]["text"] + ' ' + winner["sense"][0]["gloss"][0]["text"])
+#check if anything exists in the kanji's entry field. Kana only words will leave this empty.
+if entryOfTheDay["kanji"]:
+    dailyKanji = entryOfTheDay["kanji"][0]["text"]
 else:
-    dailyKanji = (winner["kana"][0]["text"] + ' ' + winner["sense"][0]["gloss"][0]["text"])
-    
-    
-def uprint(*objects, sep=' ', end='\n', file=sys.stdout):
-    enc = file.encoding
-    if enc == 'UTF-8':
-        print(*objects, sep=sep, end=end, file=file)
-    else:
-        f = lambda obj: str(obj).encode(enc, errors='backslashreplace').decode(enc)
-        print(*map(f, objects), sep=sep, end=end, file=file)
+    dailyKanji = 0
 
+dailyKana = entryOfTheDay["kana"][0]["text"]
 
-print(template.format(date=date, dailyKanji=dailyKanji))
+dailyGloss = ""
+for i in entryOfTheDay["sense"][0]["gloss"][:-1]:
+    dailyGloss = dailyGloss + i["text"] + "; "
+dailyGloss = dailyGloss + entryOfTheDay["sense"][0]["gloss"][-1]["text"]
 
+if dailyKanji:
+    formattedEntry = "『 {dailyKanji} 』 ⸨ {dailyKana} ⸩ - {dailyGloss}".format(dailyKanji=dailyKanji, dailyKana=dailyKana, dailyGloss=dailyGloss)
+else:
+    formattedEntry = "⸨ {dailyKana} ⸩ - {dailyGloss}".format(dailyKana = dailyKana, dailyGloss=dailyGloss)
+
+print(template.format(date=date, formattedEntry=formattedEntry))
